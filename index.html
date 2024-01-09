@@ -5,21 +5,35 @@
     <script type="text/javascript">
         window.onload = function() {
             var icalData = getParameterByName('icalData');
-            if (icalData) {
-                window.location.href = 'data:text/calendar;charset=utf8,' + icalData;
-            }
+    if (icalData) {
+        downloadICalFile(icalData);
+    }
         };
 
-       function getParameterByName(name, url = window.location.href) {
-            name = name.replace(/[\[\]]/g, '\\$&');
-            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
+        function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function downloadICalFile(icalData) {
+    var blob = new Blob([icalData], {type: "text/calendar;charset=utf-8"});
+    var url = window.URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "event.ics"; // Filename for the downloaded file
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+}
     </script>
 </head>
 <body>
+    <p>Preparing your calendar event...</p>
+
 </body>
 </html>
