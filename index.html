@@ -5,15 +5,9 @@
     <script type="text/javascript">
         window.onload = function() {
             var icalData = getParameterByName('icalData');
-            console.log('Raw icalData:', icalData);
+            console.log(icalData);
             if (icalData) {
-                try {
-                    const decodedData = decodeURIComponent(icalData);
-                    console.log('Decoded icalData:', decodedData);
-                    window.location.href = 'data:text/calendar;charset=utf8,' + decodedData;
-                } catch (e) {
-                    console.error('Error decoding icalData:', e);
-                }
+                window.location.href = 'data:text/calendar;charset=utf8,' + icalData;
             }
         };
 
@@ -25,12 +19,8 @@
             if (!results) return null;
             if (!results[2]) return '';
 
-            try {
-                return decodeURIComponent(results[2].replace(/\+/g, ' '));
-            } catch (e) {
-                console.error('Decoding failed:', e);
-                return results[2].replace(/\+/g, ' ');
-            }
+            // Return the parameter value as is, without decoding.
+            return results[2].replace(/\+/g, ' ');
         }
     </script>
 </head>
