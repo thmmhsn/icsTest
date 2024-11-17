@@ -11,16 +11,16 @@
             }
         };
 
-        function getParameterByName(name, url = window.location.href) {
+      function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
             var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
                 results = regex.exec(url);
-        
+
             if (!results) return null;
             if (!results[2]) return '';
-        
-            // Decode parameter value to handle foreign characters
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+
+            // Return the parameter value as is, without decoding.
+            return results[2].replace(/\+/g, ' ');
         }
     </script>
 </head>
