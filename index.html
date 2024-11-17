@@ -5,13 +5,19 @@
     <script type="text/javascript">
         window.onload = function() {
             var icalData = getParameterByName('icalData');
-            console.log(icalData);
+            console.log('Raw icalData:', icalData);
             if (icalData) {
-                window.location.href = 'data:text/calendar;charset=utf8,' + icalData;
+                try {
+                    const decodedData = decodeURIComponent(icalData);
+                    console.log('Decoded icalData:', decodedData);
+                    window.location.href = 'data:text/calendar;charset=utf8,' + decodedData;
+                } catch (e) {
+                    console.error('Error decoding icalData:', e);
+                }
             }
         };
 
-      function getParameterByName(name, url = window.location.href) {
+        function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
             var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
                 results = regex.exec(url);
@@ -19,8 +25,12 @@
             if (!results) return null;
             if (!results[2]) return '';
 
-            // Return the parameter value as is, without decoding.
-            return results[2].replace(/\+/g, ' ');
+            try {
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            } catch (e) {
+                console.error('Decoding failed:', e);
+                return results[2].replace(/\+/g, ' ');
+            }
         }
     </script>
 </head>
